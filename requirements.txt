@@ -1,0 +1,3 @@
+pandas
+flake8
+pytest
