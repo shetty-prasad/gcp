@@ -34,7 +34,7 @@ jobs:
       uses: actions/checkout@v4
     
     - name: Zip the folder
-      run: zip -r ./src.zip src/
+      run: zip -r ./main.zip main.py
 
     - name: Authorize GCP
       uses: 'google-github-actions/auth@v2'
@@ -50,7 +50,7 @@ jobs:
 
     - name: Upload to Google Cloud Storage
       run: |
-        gsutil cp ./src.zip gs://${{ env.GCS_BUCKET_NAME }}/function.zip
+        gsutil cp ./main.zip gs://${{ env.GCS_BUCKET_NAME }}/main.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -79,5 +79,5 @@ jobs:
             --service-account=${{ env.CF_SA }} \
             --trigger-http \
             --entry-point=main_func \
-            --source=gs://${{ env.GCS_BUCKET_NAME }}/function.zip \
+            --source=gs://${{ env.GCS_BUCKET_NAME }}/main.zip \
             --memory=256MB \
